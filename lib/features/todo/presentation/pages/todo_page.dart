@@ -1,14 +1,29 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_cubit.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_state.dart';
+import 'package:todo_app/core/locale/supported_locales.dart';
+import 'package:todo_app/core/style/app_color.dart';
 import 'package:todo_app/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_event.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_state.dart';
+import 'package:todo_app/gen/fonts.gen.dart';
+import 'package:todo_app/generated/locale_keys.g.dart';
 
-class TodoPage extends StatelessWidget {
+class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
+
+  @override
+  State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  String _selectedLang = "uz";
 
   void _openTodoDialog(BuildContext context, {TodoEntity? todo}) {
     final controller = TextEditingController(text: todo?.title ?? '');
@@ -17,25 +32,31 @@ class TodoPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(isEdit ? "Edit Todo" : "Add Todo"),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        title: Text(
+          isEdit ? LocaleKeys.edit_todo.tr() : LocaleKeys.add_todo.tr(),
+        ),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(
-            hintText: "Enter task...",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            hintText: LocaleKeys.enter_task.tr(),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16.r),
+            ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(LocaleKeys.cancel.tr()),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blueAccent,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             onPressed: () {
@@ -58,8 +79,9 @@ class TodoPage extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-
-            child: Text(isEdit ? "Save" : "Add"),
+            child: Text(
+              isEdit ? LocaleKeys.save.tr() : LocaleKeys.add_todo.tr(),
+            ),
           ),
         ],
       ),
@@ -68,47 +90,166 @@ class TodoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TodoBloc>().add(LoadTodosEvent());
     return Scaffold(
-      // backgroundColor: const Color(0xfff6f8fb),
       appBar: AppBar(
-        title: const Text(
-          "My Todos",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        leadingWidth: 88.w,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(24.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white.withOpacity(0.05)
+                        : Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: DropdownButton<String>(
+                dropdownColor: AppColors.primary,
+                focusColor: AppColors.primary,
+                value: _selectedLang,
+                underline: const SizedBox(),
+                borderRadius: BorderRadius.circular(12.r),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                alignment: AlignmentDirectional.topEnd,
+                selectedItemBuilder: (context) {
+                  return [
+                    const CircleAvatar(
+                      backgroundColor: AppColors.productDark,
+                      child: Text("🇺🇿"),
+                    ),
+                    const CircleAvatar(
+                      backgroundColor: AppColors.productDark,
+                      child: Text("🇬🇧"),
+                    ),
+                    const CircleAvatar(
+                      backgroundColor: AppColors.productDark,
+                      child: Text("🇷🇺"),
+                    ),
+                  ];
+                },
+                items: const [
+                  DropdownMenuItem(
+                    value: "uz",
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        children: [
+                          Text("🇺🇿 "),
+                          SizedBox(width: 6),
+                          Text(
+                            "Uzbek",
+                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: "en",
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        children: [
+                          Text("🇬🇧 "),
+                          SizedBox(width: 6),
+                          Text(
+                            "English",
+                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: "ru",
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        children: [
+                          Text("🇷🇺 "),
+                          SizedBox(width: 6),
+                          Text(
+                            "Русский",
+                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+                onChanged: (value) async {
+                  setState(() {
+                    _selectedLang = value!;
+                  });
+
+                  if (value == "en") {
+                    await context.setLocale(const Locale("en", "US"));
+                  } else if (value == "ru") {
+                    await context.setLocale(const Locale("ru", "RU"));
+                  } else if (value == "uz") {
+                    await context.setLocale(const Locale("uz", "UZ"));
+                  }
+                },
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          LocaleKeys.my_todos.tr(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // backgroundColor: Colors.white,
-        // foregroundColor: Colors.black,
         actions: [
           BlocBuilder<ThemeCubit, ThemeState>(
             builder: (context, state) {
-              return Switch(
-                value: state.themeMode == ThemeMode.dark,
-                onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+              final isDark = state.themeMode == ThemeMode.dark;
+              return IconButton(
+                onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, anim) =>
+                      RotationTransition(turns: anim, child: child),
+                  child: Icon(
+                    isDark
+                        ? Icons.wb_sunny_rounded
+                        : Icons.nightlight_round_rounded,
+                    key: ValueKey(isDark),
+                    color: AppColors.primary,
+                  ),
+                ),
               );
             },
           ),
         ],
       ),
-
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           if (state is TodoLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TodoLoaded) {
             if (state.todos.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
-                  "No tasks yet.\nTap + to add one!",
+                  LocaleKeys.no_tasks.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                  style: TextStyle(color: Colors.grey, fontSize: 16.sp),
                 ),
               );
             }
-
             return ListView.separated(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.w),
               itemCount: state.todos.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, __) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
                 final todo = state.todos[index];
                 return Dismissible(
@@ -119,33 +260,42 @@ class TodoPage extends StatelessWidget {
                   },
                   background: Container(
                     alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
                       color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: const Icon(Icons.delete, color: Colors.white),
                   ),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                      color: todo.isDone
+                          ? AppColors.primary.withOpacity(0.1)
+                          : Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Theme.of(context).brightness == Brightness.dark
+                          ? Border.all(color: Colors.white.withOpacity(0.08))
+                          : null,
+                      boxShadow:
+                          Theme.of(context).brightness == Brightness.light
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]
+                          : [],
                     ),
                     child: Row(
                       children: [
                         Checkbox(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6.r),
                           ),
                           value: todo.isDone,
+                          activeColor: AppColors.primary,
                           onChanged: (_) {
                             context.read<TodoBloc>().add(
                               UpdateTodoEvent(
@@ -158,12 +308,12 @@ class TodoPage extends StatelessWidget {
                           child: Text(
                             todo.title,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                               decoration: todo.isDone
                                   ? TextDecoration.lineThrough
                                   : null,
-                              color: todo.isDone ? Colors.grey : Colors.black87,
+                              color: todo.isDone ? AppColors.primary : null,
                             ),
                           ),
                         ),
@@ -187,8 +337,10 @@ class TodoPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        backgroundColor: AppColors.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         onPressed: () => _openTodoDialog(context),
         child: const Icon(Icons.add, size: 28),
       ),

@@ -13,13 +13,6 @@ abstract class  LocaleKeys {
   static const sign_in = 'sign_in';
   static const sign_up_to_get_started = 'sign_up_to_get_started';
   static const already_have_account = 'already_have_account';
-  static const confirm = 'confirm';
-  static const enter_sms_code = 'enter_sms_code';
-  static const your_phone_number = 'your_phone_number';
-  static const check_country_code = 'check_country_code';
-  static const enter_phone_number = 'enter_phone_number';
-  static const phone_number_error = 'phone_number_error';
-  static const get_sms_code = 'get_sms_code';
   static const no_profile_data = 'no_profile_data';
   static const profile = 'profile';
   static const edit_profile = 'edit_profile';
@@ -37,9 +30,25 @@ abstract class  LocaleKeys {
   static const no = 'no';
   static const name = 'name';
   static const email = 'email';
+  static const password = 'password';
+  static const confirm_password = 'confirm_password';
+  static const passwords_do_not_match = 'passwords_do_not_match';
   static const phone = 'phone';
   static const color = 'color';
-  static const add_to_cart = 'add_to_cart';
-  static const product_description = 'product_description';
+  static const my_todos = 'my_todos';
+  static const add_todo = 'add_todo';
+  static const edit_todo = 'edit_todo';
+  static const enter_task = 'enter_task';
+  static const no_tasks = 'no_tasks';
+  static const delete = 'delete';
+  static const task_saved = 'task_saved';
+  static const task_deleted = 'task_deleted';
+  static const mark_done = 'mark_done';
+  static const mark_undone = 'mark_undone';
+  static const error = 'error';
+  static const loading = 'loading';
+  static const success = 'success';
+  static const retry = 'retry';
+  static const ok = 'ok';
 
 }

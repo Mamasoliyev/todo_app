@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/core/style/app_color.dart';
 import 'package:todo_app/gen/fonts.gen.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -45,9 +49,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
           children: [
             Column(
               children: [
-                // Image with border radius
+                // 🔽 Rasm
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: PageView.builder(
                     controller: _controller,
                     itemCount: _texts.length,
@@ -56,37 +60,51 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     },
                     itemBuilder: (context, index) {
                       return ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(32),
-                          bottomRight: Radius.circular(32),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(32.r),
+                          bottomRight: Radius.circular(32.r),
                         ),
-                        child: Image.network(
-                          _images[index],
-                          fit: BoxFit.cover,
+                        child: CachedNetworkImage(
+                          imageUrl: _images[index],
                           width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: SizedBox(
+                              width: 30.w,
+                              height: 30.w,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error, size: 40.sp, color: Colors.red),
                         ),
                       );
                     },
                   ),
                 ),
 
-                // Texts
+                // 🔽 Text + indikator + button
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 16,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24.w,
+                      vertical: 16.h,
                     ),
                     child: Column(
                       children: [
+                        SizedBox(height: 16.h),
                         Text(
                           _texts[_currentIndex],
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                              ),
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 20.h),
 
                         // Page indicator
                         Row(
@@ -94,11 +112,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           children: List.generate(_texts.length, (index) {
                             return AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
-                              margin: const EdgeInsets.all(4),
-                              width: _currentIndex == index ? 14 : 8,
-                              height: 8,
+                              margin: EdgeInsets.all(4.w),
+                              width: _currentIndex == index ? 14.w : 8.w,
+                              height: 8.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.r),
                                 color: _currentIndex == index
                                     ? Colors.blue
                                     : Colors.grey.shade400,
@@ -113,9 +131,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(16.r),
                               ),
                             ),
                             onPressed: _nextPage,
@@ -123,8 +141,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               _currentIndex == _texts.length - 1
                                   ? "Sign In"
                                   : "Next",
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -137,15 +155,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ],
             ),
 
-            // Language dropdown top-right
+            // 🔽 Language dropdown
             Positioned(
-              top: 12,
-              right: 16,
+              top: 12.h,
+              right: 16.w,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(24),
+                  color: AppColors.primary,
+                  // color: Colors.white.withOpacity(0.85),
+                  borderRadius: BorderRadius.circular(24.r),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.15),
@@ -155,62 +174,98 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ],
                 ),
                 child: DropdownButton<String>(
+                  dropdownColor: AppColors.primary,
+                  focusColor: AppColors.primary,
                   value: _selectedLang,
                   underline: const SizedBox(),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  // dropdownColor: Colors.white,
+                  alignment: AlignmentDirectional.topEnd,
                   selectedItemBuilder: (context) {
                     return [
-                      const CircleAvatar(child: Text("🇺🇿")),
-                      const CircleAvatar(child: Text("🇬🇧")),
-                      const CircleAvatar(child: Text("🇷🇺")),
+                      const CircleAvatar(
+                        backgroundColor: AppColors.productDark,
+                        child: Text("🇺🇿"),
+                      ),
+                      const CircleAvatar(
+                        backgroundColor: AppColors.productDark,
+                        child: Text("🇬🇧"),
+                      ),
+                      const CircleAvatar(
+                        backgroundColor: AppColors.productDark,
+                        child: Text("🇷🇺"),
+                      ),
                     ];
                   },
                   items: const [
                     DropdownMenuItem(
                       value: "uz",
-                      child: Row(
-                        children: [
-                          Text("🇺🇿 "),
-                          SizedBox(width: 6),
-                          Text(
-                            "Uzbek",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
-                          ),
-                        ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          children: [
+                            Text("🇺🇿 "),
+                            SizedBox(width: 6),
+                            Text(
+                              "Uzbek",
+                              style: TextStyle(
+                                fontFamily: FontFamily.comfortaa,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     DropdownMenuItem(
                       value: "en",
-                      child: Row(
-                        children: [
-                          Text("🇬🇧 "),
-                          SizedBox(width: 6),
-                          Text(
-                            "English",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
-                          ),
-                        ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          children: [
+                            Text("🇬🇧 "),
+                            SizedBox(width: 6),
+                            Text(
+                              "English",
+                              style: TextStyle(
+                                fontFamily: FontFamily.comfortaa,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     DropdownMenuItem(
                       value: "ru",
-                      child: Row(
-                        children: [
-                          Text("🇷🇺 "),
-                          SizedBox(width: 6),
-                          Text(
-                            "Русский",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
-                          ),
-                        ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          children: [
+                            Text("🇷🇺 "),
+                            SizedBox(width: 6),
+                            Text(
+                              "Русский",
+                              style: TextStyle(
+                                fontFamily: FontFamily.comfortaa,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
-                  onChanged: (value) {
+                 onChanged: (value) async {
                     setState(() {
                       _selectedLang = value!;
                     });
+
+                    if (value == "en") {
+                      await context.setLocale(const Locale("en", "US"));
+                    } else if (value == "ru") {
+                      await context.setLocale(const Locale("ru", "RU"));
+                    } else if (value == "uz") {
+                      await context.setLocale(const Locale("uz", "UZ"));
+                    }
                   },
                 ),
               ),

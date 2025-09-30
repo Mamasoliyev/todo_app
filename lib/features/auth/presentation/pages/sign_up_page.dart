@@ -63,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         width: double.infinity,
                         padding: EdgeInsets.all(20.w),
                         decoration: BoxDecoration(
-                          color: Colors.white, // ichki fon oq
+                          color: Theme.of(context).cardColor, // ichki fon oq
                           borderRadius: BorderRadius.circular(20.r),
                           boxShadow: [
                             BoxShadow(
@@ -81,23 +81,18 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: TextStyle(
                                 fontSize: 26.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
                               ),
                             ),
                             SizedBox(height: 8.h),
-                            Text(
-                              LocaleKeys.sign_up_to_get_started.tr(),
-                              style: TextStyle(color: AppColors.textSecondary),
-                            ),
+                            Text(LocaleKeys.sign_up_to_get_started.tr()),
                             SizedBox(height: 30.h),
 
                             // Email
                             TextField(
                               controller: emailController,
                               decoration: InputDecoration(
-                                hintText: "Email",
+                                hintText: LocaleKeys.email.tr(),
                                 filled: true,
-                                fillColor: Colors.grey.shade100,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 14.h,
@@ -122,9 +117,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               controller: passwordController,
                               obscureText: _isObscure,
                               decoration: InputDecoration(
-                                hintText: "Password",
+                                hintText: LocaleKeys.password.tr(),
                                 filled: true,
-                                fillColor: Colors.grey.shade100,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 14.h,
@@ -162,9 +156,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               controller: confirmPasswordController,
                               obscureText: _isObscure2,
                               decoration: InputDecoration(
-                                hintText: "Confirm Password",
+                                hintText: LocaleKeys.confirm_password.tr(),
                                 filled: true,
-                                fillColor: Colors.grey.shade100,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 14.h,
@@ -204,8 +197,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 if (passwordController.text.trim() !=
                                     confirmPasswordController.text.trim()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Passwords do not match!"),
+                                     SnackBar(
+                                      content: Text(LocaleKeys.passwords_do_not_match.tr()),
                                     ),
                                   );
                                   return;
@@ -239,9 +232,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               children: [
                                 Text(
                                   "${LocaleKeys.already_have_account.tr()} ",
-                                  style: TextStyle(
-                                    color: AppColors.textSecondary,
-                                  ),
+                                  style: TextStyle(),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -250,7 +241,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   child: Text(
                                     LocaleKeys.sign_in.tr(),
                                     style: TextStyle(
-                                      color: AppColors.productDark,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

@@ -59,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                       width: double.infinity,
                       padding: EdgeInsets.all(22.w),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(22.r),
                         boxShadow: [
                           BoxShadow(
@@ -77,16 +77,12 @@ class _SignInPageState extends State<SignInPage> {
                             style: TextStyle(
                               fontSize: 22.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
                             ),
                           ),
                           SizedBox(height: 8.h),
                           Text(
                             LocaleKeys.sign_in_to_continue.tr(),
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 16.sp,
-                            ),
+                            style: TextStyle(fontSize: 16.sp),
                           ),
                           SizedBox(height: 28.h),
 
@@ -94,9 +90,8 @@ class _SignInPageState extends State<SignInPage> {
                           TextField(
                             controller: emailController,
                             decoration: InputDecoration(
-                              hintText: "Email",
+                              hintText: LocaleKeys.email.tr(),
                               filled: true,
-                              fillColor: Colors.grey.shade100,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16.w,
                                 vertical: 14.h,
@@ -121,9 +116,8 @@ class _SignInPageState extends State<SignInPage> {
                             controller: passwordController,
                             obscureText: _isObscure,
                             decoration: InputDecoration(
-                              hintText: "Password",
+                              hintText: LocaleKeys.password.tr(),
                               filled: true,
-                              fillColor: Colors.grey.shade100,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16.w,
                                 vertical: 14.h,
@@ -191,9 +185,7 @@ class _SignInPageState extends State<SignInPage> {
                             children: [
                               Text(
                                 LocaleKeys.dont_have_account.tr(),
-                                style: TextStyle(
-                                  color: AppColors.textSecondary,
-                                ),
+                                style: TextStyle(),
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -201,10 +193,7 @@ class _SignInPageState extends State<SignInPage> {
                                 },
                                 child: Text(
                                   " ${LocaleKeys.sign_up.tr()}",
-                                  style: TextStyle(
-                                    color: AppColors.productDark,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -215,10 +204,7 @@ class _SignInPageState extends State<SignInPage> {
                           Center(
                             child: Text(
                               LocaleKeys.or.tr(),
-                              style: TextStyle(
-                                color: AppColors.darkBackground,
-                                fontSize: 18.sp,
-                              ),
+                              style: TextStyle(fontSize: 18.sp),
                             ),
                           ),
                           SizedBox(height: 20.h),

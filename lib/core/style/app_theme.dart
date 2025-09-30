@@ -81,6 +81,7 @@ class AppTheme {
         ),
       ),
     ),
+    cardColor: AppColors.background,
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -124,7 +125,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(14),
       ),
       hintStyle: const TextStyle(
-        color: AppColors.darkTextSecondary,
+        color: AppColors.background,
         fontFamily: FontFamily.comfortaa,
       ),
     ),
@@ -132,18 +133,18 @@ class AppTheme {
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
         fontSize: 16,
-        color: AppColors.darkTextPrimary,
+        color: AppColors.background,
         fontFamily: FontFamily.comfortaa,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
-        color: AppColors.darkTextSecondary,
+        color: AppColors.background,
         fontFamily: FontFamily.comfortaa,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: AppColors.darkTextPrimary,
+        color: AppColors.background,
         fontFamily: FontFamily.comfortaa,
       ),
     ),
@@ -160,5 +161,6 @@ class AppTheme {
         ),
       ),
     ),
+    cardColor: AppColors.darkBackground,
   );
 }
