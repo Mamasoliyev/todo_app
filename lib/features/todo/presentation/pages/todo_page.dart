@@ -69,15 +69,15 @@ class TodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff6f8fb),
+      // backgroundColor: const Color(0xfff6f8fb),
       appBar: AppBar(
         title: const Text(
           "My Todos",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        // backgroundColor: Colors.white,
+        // foregroundColor: Colors.black,
         actions: [
           BlocBuilder<ThemeCubit, ThemeState>(
             builder: (context, state) {
