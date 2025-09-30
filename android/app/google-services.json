@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "992100266525",
+    "firebase_url": "https://e-commerce-bfa1b-default-rtdb.firebaseio.com",
+    "project_id": "e-commerce-bfa1b",
+    "storage_bucket": "e-commerce-bfa1b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992100266525:android:e0519522f075960ceb0cf4",
+        "android_client_info": {
+          "package_name": "com.ecommerce.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "992100266525-q8sl9ld7hloeaghgf3ehgaps3mfof626.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecommerce.e_commerce",
+            "certificate_hash": "90a676769a962a19b95f33908be2c24c7ea38d74"
+          }
+        },
+        {
+          "client_id": "992100266525-qlndng16cv0ion5t1fvqor0tt08j74bh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecommerce.e_commerce",
+            "certificate_hash": "7d105628c37402f631f8336372ee0cac3857e01f"
+          }
+        },
+        {
+          "client_id": "992100266525-ob3u9q9gtk26hlm0o735i037h805mj7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjL74WVUiRpUUTixCos50T7nxx0Iq6MmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "992100266525-ob3u9q9gtk26hlm0o735i037h805mj7j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "992100266525-den309o348ro8hhth9edddntlj82t69t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.e-commerce.eCommerce"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992100266525:android:9b138eec1718dd25eb0cf4",
+        "android_client_info": {
+          "package_name": "com.todo_app.todo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "992100266525-ob3u9q9gtk26hlm0o735i037h805mj7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjL74WVUiRpUUTixCos50T7nxx0Iq6MmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "992100266525-ob3u9q9gtk26hlm0o735i037h805mj7j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "992100266525-den309o348ro8hhth9edddntlj82t69t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.e-commerce.eCommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
