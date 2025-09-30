@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/core/bloc/theme_bloc/app_theme_cubit.dart';
+import 'package:todo_app/core/bloc/theme_bloc/app_theme_state.dart';
 import 'package:todo_app/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_event.dart';
@@ -44,11 +46,19 @@ class TodoPage extends StatelessWidget {
                     UpdateTodoEvent(todo.copyWith(title: title)),
                   );
                 } else {
-                  context.read<TodoBloc>().add(AddTodoEvent(todo!));
+                  final newTodo = TodoEntity(
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
+                    title: title,
+                    description: null,
+                    isDone: false,
+                    createdAt: DateTime.now(),
+                  );
+                  context.read<TodoBloc>().add(AddTodoEvent(newTodo));
                 }
                 Navigator.pop(context);
               }
             },
+
             child: Text(isEdit ? "Save" : "Add"),
           ),
         ],
@@ -68,7 +78,18 @@ class TodoPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        actions: [
+          BlocBuilder<ThemeCubit, ThemeState>(
+            builder: (context, state) {
+              return Switch(
+                value: state.themeMode == ThemeMode.dark,
+                onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+              );
+            },
+          ),
+        ],
       ),
+
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           if (state is TodoLoading) {
@@ -127,7 +148,9 @@ class TodoPage extends StatelessWidget {
                           value: todo.isDone,
                           onChanged: (_) {
                             context.read<TodoBloc>().add(
-                              UpdateTodoEvent(todo.copyWith(isDone: !todo.isDone)),
+                              UpdateTodoEvent(
+                                todo.copyWith(isDone: !todo.isDone),
+                              ),
                             );
                           },
                         ),

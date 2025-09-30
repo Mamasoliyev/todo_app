@@ -156,6 +156,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
                 child: DropdownButton<String>(
                   value: _selectedLang,
+                  isExpanded: true, // 👈 qo‘shildi
                   underline: const SizedBox(),
                   borderRadius: BorderRadius.circular(12),
                   icon: const Icon(Icons.keyboard_arrow_down_rounded),
@@ -173,9 +174,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         children: [
                           Text("🇺🇿 "),
                           SizedBox(width: 6),
-                          Text(
-                            "Uzbek",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          Flexible(
+                            // 👈 overflow oldini oladi
+                            child: Text(
+                              "Uzbek",
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
@@ -186,9 +190,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         children: [
                           Text("🇬🇧 "),
                           SizedBox(width: 6),
-                          Text(
-                            "English",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          Flexible(
+                            child: Text(
+                              "English",
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
@@ -199,18 +205,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         children: [
                           Text("🇷🇺 "),
                           SizedBox(width: 6),
-                          Text(
-                            "Русский",
-                            style: TextStyle(fontFamily: FontFamily.comfortaa),
+                          Flexible(
+                            child: Text(
+                              "Русский",
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
                   onChanged: (value) {
-                    setState(() {
-                      _selectedLang = value!;
-                    });
+                    setState(() => _selectedLang = value!);
                   },
                 ),
               ),
