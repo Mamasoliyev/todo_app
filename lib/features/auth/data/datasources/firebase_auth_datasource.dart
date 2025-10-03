@@ -106,37 +106,6 @@ class FirebaseAuthDatasource {
     return user;
   }
 
-  // PHONE
-  Future<void> signInWithPhone({
-    required String phoneNumber,
-    required Function(String verificationId, int? resendToken) codeSent,
-    required Function(FirebaseAuthException) verificationFailed,
-  }) async {
-    await _auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      codeSent: (verificationId, resendToken) =>
-          codeSent(verificationId, resendToken),
-      verificationFailed: (e) => verificationFailed(e),
-      verificationCompleted: (credential) async {
-        final res = await _auth.signInWithCredential(credential);
-        final user = res.user;
-        if (user != null) await _saveUserToFirestore(user);
-      },
-      codeAutoRetrievalTimeout: (_) {},
-    );
-  }
-
-  Future<User?> verifySmsCode(String verificationId, String smsCode) async {
-    final credential = PhoneAuthProvider.credential(
-      verificationId: verificationId,
-      smsCode: smsCode,
-    );
-    final res = await _auth.signInWithCredential(credential);
-    final user = res.user;
-    if (user != null) await _saveUserToFirestore(user);
-    return user;
-  }
-
   Future<void> signOut() async {
     await _auth.signOut();
   }

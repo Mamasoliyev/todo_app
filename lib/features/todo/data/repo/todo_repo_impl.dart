@@ -25,7 +25,7 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<List<TodoEntity>> getTodos() async {
     final models = await remoteDataSource.getTodos();
-    return models.map((m) => m as TodoEntity).toList();
+    return models;
   }
 
   @override

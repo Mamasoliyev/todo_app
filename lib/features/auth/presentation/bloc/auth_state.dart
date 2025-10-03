@@ -23,16 +23,3 @@ class AuthFailure extends AuthState {
   List<Object?> get props => [message];
 }
 
-class PhoneVerificationSentState extends AuthState {
-  final String verificationId;
-  PhoneVerificationSentState(this.verificationId);
-  @override
-  List<Object?> get props => [verificationId];
-}
-
-class PhoneVerificationFailedState extends AuthState {
-  final String message;
-  PhoneVerificationFailedState(this.message);
-  @override
-  List<Object?> get props => [message];
-}

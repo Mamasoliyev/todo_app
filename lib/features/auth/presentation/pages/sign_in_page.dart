@@ -30,8 +30,6 @@ class _SignInPageState extends State<SignInPage> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
-        } else if (state is PhoneVerificationSentState) {
-          context.push("/sms-code");
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(

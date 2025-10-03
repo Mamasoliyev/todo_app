@@ -23,7 +23,6 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-  String _selectedLang = "uz";
 
   void _openTodoDialog(BuildContext context, {TodoEntity? todo}) {
     final controller = TextEditingController(text: todo?.title ?? '');
@@ -87,9 +86,17 @@ class _TodoPageState extends State<TodoPage> {
       ),
     );
   }
+  @override
+  void initState() {
+    super.initState();
+    context.read<TodoBloc>().add(LoadTodosEvent());
+  }
+
 
   @override
   Widget build(BuildContext context) {
+  String _selectedLang = context.savedLocale!.languageCode.toString();
+
     context.read<TodoBloc>().add(LoadTodosEvent());
     return Scaffold(
       appBar: AppBar(

@@ -27,33 +27,4 @@ class FacebookSignInRequested extends AuthEvent {}
 
 class AppleSignInRequested extends AuthEvent {}
 
-class PhoneSignInRequested extends AuthEvent {
-  final String phoneNumber;
-  PhoneSignInRequested(this.phoneNumber);
-  @override
-  List<Object?> get props => [phoneNumber];
-}
-
-class PhoneCodeSent extends AuthEvent {
-  final String verificationId;
-  PhoneCodeSent(this.verificationId);
-  @override
-  List<Object?> get props => [verificationId];
-}
-
-class VerifyPhoneCodeRequested extends AuthEvent {
-  final String verificationId;
-  final String smsCode;
-  VerifyPhoneCodeRequested(this.verificationId, this.smsCode);
-  @override
-  List<Object?> get props => [verificationId, smsCode];
-}
-
-class PhoneVerificationFailed extends AuthEvent {
-  final String error;
-  PhoneVerificationFailed(this.error);
-  @override
-  List<Object?> get props => [error];
-}
-
 class SignOutRequested extends AuthEvent {}

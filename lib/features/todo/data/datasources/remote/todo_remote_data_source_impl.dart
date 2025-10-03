@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_app/features/todo/data/datasources/remote/todo_remote_data_source.dart';
 import 'package:todo_app/features/todo/data/models/todo_model.dart';
 
@@ -17,6 +18,7 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   Future<void> addTodo(TodoModel todo) async {
     final docRef = _col.doc(todo.id);
     await docRef.set({
+      'user_id': FirebaseAuth.instance.currentUser?.uid,
       'title': todo.title,
       'description': todo.description,
       'isDone': todo.isDone,
@@ -31,7 +33,15 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
 
   @override
   Future<List<TodoModel>> getTodos() async {
-    final snapshot = await _col.orderBy('createdAt', descending: true).get();
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return [];
+
+    // Composite index bo‘yicha query
+    final snapshot = await _col
+        .where('user_id', isEqualTo: uid)
+        .orderBy('createdAt', descending: true)
+        .get();
+
     return snapshot.docs.map((d) {
       final data = d.data() as Map<String, dynamic>;
       final createdAtField = data['createdAt'];

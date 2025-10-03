@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/todo_entity.dart';
 
 class TodoModel extends TodoEntity {
   TodoModel({
+    
     required String id,
     required String title,
     String? description,
@@ -16,22 +19,30 @@ class TodoModel extends TodoEntity {
        );
 
   factory TodoModel.fromMap(String id, Map<String, dynamic> map) {
+    final createdAtField = map['createdAt'];
+    DateTime createdAt;
+    if (createdAtField is Timestamp) {
+      createdAt = createdAtField.toDate();
+    } else if (createdAtField is String) {
+      createdAt = DateTime.tryParse(createdAtField) ?? DateTime.now();
+    } else {
+      createdAt = DateTime.now();
+    }
+
     return TodoModel(
       id: id,
       title: map['title'] as String? ?? '',
       description: map['description'] as String?,
       isDone: map['isDone'] as bool? ?? false,
-      createdAt:
-          (map['createdAt'] as TimestampWrapper?)?.toDate() ?? DateTime.now(),
+      createdAt: createdAt,
     );
   }
-
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'description': description,
       'isDone': isDone,
-      'createdAt': createdAt.toIso8601String(), // store ISO string
+      'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 }

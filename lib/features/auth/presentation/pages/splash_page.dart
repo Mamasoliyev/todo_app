@@ -8,7 +8,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 1200), () {
+    Future.delayed(const Duration(milliseconds: 1300), () {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         context.go("/onboarding");

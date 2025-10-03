@@ -9,10 +9,8 @@ import 'package:todo_app/features/auth/domain/usecases/sign_in_with_apple_usecas
 import 'package:todo_app/features/auth/domain/usecases/sign_in_with_email_usecase.dart';
 import 'package:todo_app/features/auth/domain/usecases/sign_in_with_facebook_usecase.dart';
 import 'package:todo_app/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
-import 'package:todo_app/features/auth/domain/usecases/sign_in_with_phone_usecase.dart';
 import 'package:todo_app/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:todo_app/features/auth/domain/usecases/sign_up_with_email_usecase.dart';
-import 'package:todo_app/features/auth/domain/usecases/verify_sms_code_usecase.dart';
 import 'package:todo_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:todo_app/features/todo/data/datasources/remote/todo_remote_data_source.dart';
 import 'package:todo_app/features/todo/data/datasources/remote/todo_remote_data_source_impl.dart';
@@ -57,8 +55,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SignInWithGoogle(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignInWithFacebook(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignInWithApple(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => SignInWithPhone(sl<AuthRepository>()));
-  sl.registerLazySingleton(() => VerifySmsCode(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignOut(sl<AuthRepository>()));
 
   // Auth Bloc
@@ -69,8 +65,6 @@ Future<void> init() async {
       signInWithGoogle: sl(),
       signInWithFacebook: sl(),
       signInWithApple: sl(),
-      signInWithPhone: sl(),
-      verifySmsCode: sl(),
       signOut: sl(),
     ),
   );

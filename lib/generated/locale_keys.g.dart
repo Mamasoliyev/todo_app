@@ -50,5 +50,9 @@ abstract class  LocaleKeys {
   static const success = 'success';
   static const retry = 'retry';
   static const ok = 'ok';
+  static const next = 'next';
+  static const text1 = 'text1';
+  static const text2 = 'text2';
+  static const text3 = 'text3';
 
 }

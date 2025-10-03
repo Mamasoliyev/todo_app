@@ -46,33 +46,6 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signInWithPhone({
-    required String phoneNumber,
-    required Function(String verificationId, int? resendToken) codeSent,
-    required Function(Exception) verificationFailed,
-  }) async {
-    try {
-      await datasource.signInWithPhone(
-        phoneNumber: phoneNumber,
-        codeSent: codeSent,
-        verificationFailed: (e) => verificationFailed(e),
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<UserEntity> verifySmsCode(
-    String verificationId,
-    String smsCode,
-  ) async {
-    final user = await datasource.verifySmsCode(verificationId, smsCode);
-    if (user == null) throw Exception('Phone verification failed');
-    return _mapToEntity(user);
-  }
-
-  @override
   Future<void> signOut() async => await datasource.signOut();
 
   @override

@@ -1,6 +1,6 @@
 {
     "have_account": "Hisobingiz bormi? Kirish",
-    "welcome_to": "xush kelibsiz",
+    "welcome_to": "Xush kelibsiz",
     "sign_in_to_continue": "Davom etish uchun tizimga kiring",
     "dont_have_account": "Hisobingiz yo'qmi?",
     "or": "yoki",
@@ -45,5 +45,10 @@
     "loading": "Yuklanmoqda...",
     "success": "Muvaffaqiyatli",
     "retry": "Qayta urinib ko‘rish",
-    "ok": "OK"
+    "ok": "OK",
+    "next": "Keyingisi",
+    "text1": "Kun tartibingizni oddiy va aniq vazifalar boshqaruvi bilan tartibga soling.",
+    "text2": "Diqqatni jamlang — yutuqlaringizni kuzating va maqsadlaringizni yakunlang.",
+    "text3": "Samaradorligingizni oshiring va muhim vazifani hech qachon o'tkazib yubormang!"
+
 }

@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/core/locale/supported_locales.dart';
 import 'package:todo_app/core/style/app_color.dart';
 import 'package:todo_app/gen/fonts.gen.dart';
+import 'package:todo_app/generated/locale_keys.g.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -16,12 +18,12 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _controller = PageController();
   int _currentIndex = 0;
-  String _selectedLang = "uz";
+  String _selectedLang = SupportedLocales.engLocal.languageCode;
 
   final List<String> _texts = [
-    'Organize your day with simple and clear task management.',
-    'Stay focused — track your progress and complete your goals.',
-    'Boost your productivity and never miss an important task again!',
+    LocaleKeys.text1,
+    LocaleKeys.text2,
+    LocaleKeys.text3,
   ];
 
   final List<String> _images = [
@@ -96,7 +98,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       children: [
                         SizedBox(height: 16.h),
                         Text(
-                          _texts[_currentIndex],
+                          _texts[_currentIndex].tr(),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
@@ -139,8 +141,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             onPressed: _nextPage,
                             child: Text(
                               _currentIndex == _texts.length - 1
-                                  ? "Sign In"
-                                  : "Next",
+                                  ? LocaleKeys.next.tr()
+                                  : LocaleKeys.next.tr(),
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
@@ -254,7 +256,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                     ),
                   ],
-                 onChanged: (value) async {
+                  onChanged: (value) async {
                     setState(() {
                       _selectedLang = value!;
                     });

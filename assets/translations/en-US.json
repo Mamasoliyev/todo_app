@@ -45,5 +45,9 @@
     "loading": "Loading...",
     "success": "Success",
     "retry": "Retry",
-    "ok": "OK"
+    "ok": "OK",
+    "next": "Next",
+    "text1": "Organize your day with simple and clear task management.",
+    "text2": "Stay focused — track your progress and complete your goals.",
+    "text3": "Boost your productivity and never miss an important task again!"
 }
