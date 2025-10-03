@@ -18,7 +18,8 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _controller = PageController();
   int _currentIndex = 0;
-  String _selectedLang = SupportedLocales.engLocal.languageCode;
+  // String _selectedLang = SupportedLocales.engLocal.languageCode;
+
 
   final List<String> _texts = [
     LocaleKeys.text1,
@@ -45,6 +46,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+  String _selectedLang = context.savedLocale!.languageCode.toString();
     return Scaffold(
       body: SafeArea(
         child: Stack(

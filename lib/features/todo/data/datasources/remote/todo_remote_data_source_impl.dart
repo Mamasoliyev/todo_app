@@ -66,7 +66,7 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   @override
   Future<void> updateTodo(TodoModel todo) async {
     await _col.doc(todo.id).update({
-      'title': todo.title,
+      'title': todo.title,                                                                        
       'description': todo.description,
       'isDone': todo.isDone,
     });

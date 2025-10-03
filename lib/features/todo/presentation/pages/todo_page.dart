@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_cubit.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_state.dart';
-import 'package:todo_app/core/locale/supported_locales.dart';
 import 'package:todo_app/core/style/app_color.dart';
 import 'package:todo_app/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
