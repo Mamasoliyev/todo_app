@@ -49,6 +49,17 @@
     "next": "Keyingisi",
     "text1": "Kun tartibingizni oddiy va aniq vazifalar boshqaruvi bilan tartibga soling.",
     "text2": "Diqqatni jamlang — yutuqlaringizni kuzating va maqsadlaringizni yakunlang.",
-    "text3": "Samaradorligingizni oshiring va muhim vazifani hech qachon o'tkazib yubormang!"
-
+    "text3": "Samaradorligingizni oshiring va muhim vazifani hech qachon o'tkazib yubormang!",
+    "todo_updated": "Vazifa yangilandi",
+    "todo_added": "Vazifa qo‘shildi",
+    "todo_deleted": "Vazifa o‘chirildi",
+    "todo_marked_done": "Vazifa bajarildi deb belgilandi",
+    "todo_marked_pending": "Vazifa bajarilmagan deb belgilandi",
+    "confirm_logout": "Chiqishni tasdiqlang",
+    "logout_message": "Hisobingizdan chiqmoqchimisiz?",
+    "logging_out": "Chiqilmoqda...",
+    "logout": "Chiqish",
+    "sign_in_success": "Muvaffaqiyatli dasturga kirdingiz🎉🎉🎉",
+    "fill_all_fields": "Barcha maydonlarni to'ldiring❗❗❗",
+    "sign_up_success": "Muvaffaqiyatli dasturdan ro'yxatdan o'tdingiz🎉🎉🎉"
 }

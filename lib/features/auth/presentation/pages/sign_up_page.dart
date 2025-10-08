@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/core/style/app_color.dart';
+import 'package:todo_app/core/utils/helper/app_toast.dart';
 import 'package:todo_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:todo_app/generated/locale_keys.g.dart';
 
@@ -26,17 +27,16 @@ class _SignUpPageState extends State<SignUpPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
+          AppToast.success(context, LocaleKeys.sign_up_success.tr());
           context.go('/todo');
         } else if (state is AuthFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppToast.error(context, state.message);
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.primary, // tashqi fon
+            backgroundColor: AppColors.primary,
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -47,23 +47,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Yuqoridagi "Todo App"
                       Text(
                         "Todo App",
                         style: TextStyle(
                           fontSize: 40.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // oq rang
+                          color: Colors.white,
                         ),
                       ),
                       SizedBox(height: 24.h),
 
-                      // Ramka (Card / Container)
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(20.w),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor, // ichki fon oq
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(20.r),
                           boxShadow: [
                             BoxShadow(
@@ -196,10 +194,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               onPressed: () {
                                 if (passwordController.text.trim() !=
                                     confirmPasswordController.text.trim()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                     SnackBar(
-                                      content: Text(LocaleKeys.passwords_do_not_match.tr()),
-                                    ),
+                                  AppToast.error(
+                                    context,
+                                    LocaleKeys.passwords_do_not_match.tr(),
                                   );
                                   return;
                                 }
@@ -232,15 +229,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               children: [
                                 Text(
                                   "${LocaleKeys.already_have_account.tr()} ",
-                                  style: TextStyle(),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    context.go("/sign-in");
-                                  },
+                                  onTap: () => context.go("/sign-in"),
                                   child: Text(
                                     LocaleKeys.sign_in.tr(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

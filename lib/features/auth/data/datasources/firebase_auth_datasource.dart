@@ -107,7 +107,21 @@ class FirebaseAuthDatasource {
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
+    try {
+      // 🔹 Firebase sign out
+      await _auth.signOut();
+
+      // 🔹 Google sign out
+      await GoogleSignIn().signOut();
+
+      // 🔹 Optional: completely disconnect the Google account
+      await GoogleSignIn().disconnect();
+
+      // 🔹 Facebook sign out
+      await FacebookAuth.instance.logOut();
+    } catch (e) {
+      print("Sign out error: $e");
+    }
   }
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();

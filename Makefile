@@ -34,8 +34,9 @@ splash-remove:
 
 setup: clean get gen locale splash
 
-refresh: clean get
-
+refresh:
+	@echo "🔁 Cleaning and getting dependencies..."
+	$(FLUTTER) clean && $(PUB) get
 help:
 	@echo ""
 	@echo "🚀 Flutter Makefile Commands:"

@@ -49,5 +49,17 @@
     "next": "Next",
     "text1": "Organize your day with simple and clear task management.",
     "text2": "Stay focused — track your progress and complete your goals.",
-    "text3": "Boost your productivity and never miss an important task again!"
+    "text3": "Boost your productivity and never miss an important task again!",
+    "todo_updated": "Todo updated successfully",
+    "todo_added": "Todo added successfully",
+    "todo_deleted": "Todo deleted",
+    "todo_marked_done": "Todo marked as done",
+    "todo_marked_pending": "Todo marked as pending",
+    "confirm_logout": "Confirm Logout",
+    "logout_message": "Are you sure you want to log out of your account?",
+    "logging_out": "Logging out...",
+    "logout": "Logout",
+    "sign_in_success": "Login successful🎉🎉🎉",
+    "fill_all_fields": "Fill all fields❗❗❗",
+    "sign_up_success": "Sign up successful🎉🎉🎉"
 }

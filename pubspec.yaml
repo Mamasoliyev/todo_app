@@ -1,83 +1,93 @@
-name: todo_app
-description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0
+  name: todo_app
+  description: "A new Flutter project."
+  publish_to: 'none'
+  version: 0.1.0
 
-environment:
-  sdk: ^3.9.2
+  environment:
+    sdk: ^3.9.2
 
-dependencies:
+  dependencies:
+    flutter:
+      sdk: flutter
+    bloc: ^9.0.1
+    cloud_firestore: ^6.0.2
+    country_code_picker: ^3.4.0
+    dartz: ^0.10.1
+    dio: ^5.9.0
+    easy_localization: ^3.0.8
+    equatable: ^2.0.7
+    firebase_auth: ^6.1.0
+    firebase_core: ^4.1.1
+    flutter_bloc: ^9.1.1
+    flutter_facebook_auth: ^7.1.2
+    flutter_screenutil: ^5.9.3
+    flutter_svg: ^2.2.1
+    get_it: ^8.2.0
+    go_router: ^16.2.4
+    google_sign_in: ^6.1.0
+    mask_text_input_formatter: ^2.9.0
+    pin_code_fields: ^8.0.1
+    sign_in_with_apple: ^7.0.1
+    freezed_annotation: ^3.1.0
+    cached_network_image: ^3.4.1
+    another_flushbar: ^1.12.32
+    shared_preferences: ^2.5.3
+
+  dev_dependencies:
+    flutter_test:
+      sdk: flutter
+    flutter_lints: ^5.0.0
+    build_runner: ^2.8.0
+    flutter_gen_runner: ^5.12.0
+    flutter_launcher_icons: ^0.14.4
+
+  flutter_gen:
+    output: lib/gen/ # Optional (default: lib/gen/)
+    # line_length: 80 # Optional
+
+    # Optional
+    integrations:
+      image: true
+      flutter_svg: true
+      rive: true
+      lottie: true
+
+    colors:
+      inputs:
+        # - assets/color/colors.xml
+
   flutter:
-    sdk: flutter
-  bloc: ^9.0.1
-  cloud_firestore: ^6.0.2
-  country_code_picker: ^3.4.0
-  dartz: ^0.10.1
-  dio: ^5.9.0
-  easy_localization: ^3.0.8
-  equatable: ^2.0.7
-  firebase_auth: ^6.1.0
-  firebase_core: ^4.1.1
-  flutter_bloc: ^9.1.1
-  flutter_facebook_auth: ^7.1.2
-  flutter_screenutil: ^5.9.3
-  flutter_svg: ^2.2.1
-  get_it: ^8.2.0
-  go_router: ^16.2.4
-  google_sign_in: ^6.1.0
-  mask_text_input_formatter: ^2.9.0
-  pin_code_fields: ^8.0.1
-  sign_in_with_apple: ^7.0.1
-  freezed_annotation: ^3.1.0
-  cached_network_image: ^3.4.1
+    uses-material-design: true
+    assets:
+      - assets/translations/en-US.json
+      - assets/translations/uz-UZ.json
+      - assets/translations/ru-RU.json
+      - assets/svg/
+      - assets/fonts/
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^5.0.0
-  build_runner: ^2.8.0
-  flutter_gen_runner: ^5.12.0
-
-flutter_gen:
-  output: lib/gen/ # Optional (default: lib/gen/)
-  # line_length: 80 # Optional
-
-  # Optional
-  integrations:
-    image: true
-    flutter_svg: true
-    rive: true
-    lottie: true
-
-  colors:
-    inputs:
-      # - assets/color/colors.xml
-
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/translations/en-US.json
-    - assets/translations/uz-UZ.json
-    - assets/translations/ru-RU.json
-    - assets/svg/
-    - assets/fonts/
-
-  fonts:
-  - family: Comfortaa
     fonts:
-      - asset: assets/fonts/Comfortaa/static/Comfortaa-Bold.ttf
-        weight: 700
-      - asset: assets/fonts/Comfortaa/static/Comfortaa-Light.ttf
-        weight: 300
-      - asset: assets/fonts/Comfortaa/static/Comfortaa-Medium.ttf
-        weight: 500
-      - asset: assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf
-        weight: 400
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa/static/Comfortaa-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Comfortaa/static/Comfortaa-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Comfortaa/static/Comfortaa-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Comfortaa/static/Comfortaa-Regular.ttf
+          weight: 400
 
 
-easy_localization:
-  asset_loader: codegen_loader
-  output_dir: lib/gen
-  output_file: locale_keys.g.dart
-  locale_file_extension: json
-  use_deferred_loading: false
+  easy_localization:
+    asset_loader: codegen_loader
+    output_dir: lib/gen
+    output_file: locale_keys.g.dart
+    locale_file_extension: json
+    use_deferred_loading: false
+
+  flutter_launcher_icons:
+    android: true
+    ios: true
+    image_path: "assets/icons/icon.png"
+    adaptive_icon_background: "#1B85F3"  # Sizning rang: primary color
+    adaptive_icon_foreground: "assets/icons/foreground_icon.png"

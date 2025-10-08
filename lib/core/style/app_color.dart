@@ -18,7 +18,7 @@ class AppColors {
   static const Color background = Color(0xFFFFFFFF); // White
 
   // Dark
-  static const Color darkBackground = Color(0xFF121212); // Pure dark
+  static const Color darkBackground = Colors.black; // Pure dark
   static const Color darkCard = Color.fromARGB(255, 60, 53, 53); // Dark card
   static const Color darkTextPrimary = Color(0xFFE6E0E9); // Light text
   static const Color darkTextSecondary = Color(0xFFCAC4D0); // Subtle neutral

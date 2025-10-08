@@ -1,17 +1,59 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_cubit.dart';
 import 'package:todo_app/core/bloc/theme_bloc/app_theme_state.dart';
+import 'package:todo_app/core/cache/cache_helper.dart';
 import 'package:todo_app/core/style/app_color.dart';
+import 'package:todo_app/core/utils/helper/app_toast.dart';
+import 'package:todo_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:todo_app/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_event.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_state.dart';
 import 'package:todo_app/gen/fonts.gen.dart';
 import 'package:todo_app/generated/locale_keys.g.dart';
+import 'package:another_flushbar/flushbar.dart';
+
+// class AppToast {
+//   static void _show(
+//     BuildContext context,
+//     String message, {
+//     Color backgroundColor = Colors.black87,
+//     IconData? icon,
+//     Duration duration = const Duration(seconds: 2),
+//   }) {
+//     Flushbar(
+//       message: message,
+//       backgroundColor: backgroundColor,
+//       duration: duration,
+//       borderRadius: BorderRadius.circular(12),
+//       margin: const EdgeInsets.all(16),
+//       flushbarPosition: FlushbarPosition.TOP,
+//       icon: icon != null ? Icon(icon, color: Colors.white) : null,
+//     ).show(context);
+//   }
+
+//   static void success(BuildContext context, String message) {
+//     _show(
+//       context,
+//       message,
+//       backgroundColor: Colors.green,
+//       icon: Icons.check_circle,
+//     );
+//   }
+
+//   static void error(BuildContext context, String message) {
+//     _show(context, message, backgroundColor: Colors.red, icon: Icons.error);
+//   }
+
+//   static void info(BuildContext context, String message) {
+//     _show(context, message, backgroundColor: Colors.blueGrey, icon: Icons.info);
+//   }
+// }
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -21,24 +63,34 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-
   void _openTodoDialog(BuildContext context, {TodoEntity? todo}) {
     final controller = TextEditingController(text: todo?.title ?? '');
     final isEdit = todo != null;
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
+        // 👈 shu context muhim
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
         ),
         title: Text(
           isEdit ? LocaleKeys.edit_todo.tr() : LocaleKeys.add_todo.tr(),
+          style: const TextStyle(fontFamily: FontFamily.comfortaa),
         ),
         content: TextField(
           controller: controller,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color,
+          ),
           decoration: InputDecoration(
             hintText: LocaleKeys.enter_task.tr(),
+            hintStyle: TextStyle(color: Theme.of(context).hintColor),
+            filled: true,
+            fillColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white10
+                : const Color(0xFFF2F5FA),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.r),
             ),
@@ -46,12 +98,12 @@ class _TodoPageState extends State<TodoPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext), // ✅ to‘g‘ri context
             child: Text(LocaleKeys.cancel.tr()),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueAccent,
+              backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -59,9 +111,16 @@ class _TodoPageState extends State<TodoPage> {
             onPressed: () {
               final title = controller.text.trim();
               if (title.isNotEmpty) {
+                // ✅ Avval dialogni yopamiz
+                Navigator.pop(dialogContext);
+
                 if (isEdit) {
                   context.read<TodoBloc>().add(
                     UpdateTodoEvent(todo.copyWith(title: title)),
+                  );
+                  AppToast.success(
+                    Navigator.of(context, rootNavigator: true).context,
+                    LocaleKeys.todo_updated.tr(),
                   );
                 } else {
                   final newTodo = TodoEntity(
@@ -72,10 +131,16 @@ class _TodoPageState extends State<TodoPage> {
                     createdAt: DateTime.now(),
                   );
                   context.read<TodoBloc>().add(AddTodoEvent(newTodo));
+                  AppToast.success(
+                    Navigator.of(context, rootNavigator: true).context,
+                    LocaleKeys.todo_added.tr(),
+                  );
                 }
-                Navigator.pop(context);
+              } else {
+                AppToast.error(context, LocaleKeys.enter_task.tr());
               }
             },
+
             child: Text(
               isEdit ? LocaleKeys.save.tr() : LocaleKeys.add_todo.tr(),
             ),
@@ -84,20 +149,64 @@ class _TodoPageState extends State<TodoPage> {
       ),
     );
   }
+
+  void _confirmLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          LocaleKeys.confirm_logout.tr(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(LocaleKeys.logout_message.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(LocaleKeys.cancel.tr()),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () async {
+              Navigator.pop(context);
+              context.read<AuthBloc>().add(SignOutRequested());
+              AppToast.error(context, LocaleKeys.logging_out.tr());
+              await CacheHelper(
+                await SharedPreferences.getInstance(),
+              ).clearThemeMode();
+
+              context.go('/sign-in');
+            },
+            child: Text(LocaleKeys.logout.tr()),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     context.read<TodoBloc>().add(LoadTodosEvent());
   }
 
-
   @override
   Widget build(BuildContext context) {
-  String _selectedLang = context.savedLocale!.languageCode.toString();
+    String _selectedLang =
+        context.savedLocale?.languageCode ??
+        context.locale.languageCode ??
+        "en";
 
-    context.read<TodoBloc>().add(LoadTodosEvent());
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        elevation: 0,
         leadingWidth: 88.w,
         leading: Padding(
           padding: EdgeInsets.only(left: 16.w),
@@ -211,9 +320,11 @@ class _TodoPageState extends State<TodoPage> {
         ),
         title: Text(
           LocaleKeys.my_todos.tr(),
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
         ),
-        elevation: 0,
         actions: [
           BlocBuilder<ThemeCubit, ThemeState>(
             builder: (context, state) {
@@ -235,6 +346,10 @@ class _TodoPageState extends State<TodoPage> {
               );
             },
           ),
+          IconButton(
+            onPressed: () => _confirmLogout(context),
+            icon: const Icon(Icons.logout, color: Colors.redAccent),
+          ),
         ],
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
@@ -247,7 +362,10 @@ class _TodoPageState extends State<TodoPage> {
                 child: Text(
                   LocaleKeys.no_tasks.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                  style: TextStyle(
+                    color: Theme.of(context).hintColor,
+                    fontSize: 16.sp,
+                  ),
                 ),
               );
             }
@@ -262,6 +380,7 @@ class _TodoPageState extends State<TodoPage> {
                   direction: DismissDirection.endToStart,
                   onDismissed: (_) {
                     context.read<TodoBloc>().add(DeleteTodoEvent(todo.id));
+                    AppToast.error(context, LocaleKeys.todo_deleted.tr());
                   },
                   background: Container(
                     alignment: Alignment.centerRight,
@@ -276,7 +395,7 @@ class _TodoPageState extends State<TodoPage> {
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
                       color: todo.isDone
-                          ? AppColors.primary.withOpacity(0.1)
+                          ? AppColors.primary.withOpacity(0.12)
                           : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16.r),
                       border: Theme.of(context).brightness == Brightness.dark
@@ -307,6 +426,15 @@ class _TodoPageState extends State<TodoPage> {
                                 todo.copyWith(isDone: !todo.isDone),
                               ),
                             );
+                            AppToast.success(
+                              Navigator.of(
+                                context,
+                                rootNavigator: true,
+                              ).context,
+                              todo.isDone
+                                  ? LocaleKeys.todo_marked_pending.tr()
+                                  : LocaleKeys.todo_marked_done.tr(),
+                            );
                           },
                         ),
                         Expanded(
@@ -318,7 +446,11 @@ class _TodoPageState extends State<TodoPage> {
                               decoration: todo.isDone
                                   ? TextDecoration.lineThrough
                                   : null,
-                              color: todo.isDone ? AppColors.primary : null,
+                              color: todo.isDone
+                                  ? AppColors.primary
+                                  : Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge?.color,
                             ),
                           ),
                         ),
@@ -336,6 +468,7 @@ class _TodoPageState extends State<TodoPage> {
               },
             );
           } else if (state is TodoError) {
+            AppToast.error(context, state.message);
             return Center(child: Text(state.message));
           }
           return const SizedBox();

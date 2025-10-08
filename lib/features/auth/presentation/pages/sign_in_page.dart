@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/core/style/app_color.dart';
+import 'package:todo_app/core/utils/helper/app_toast.dart';
 import 'package:todo_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:todo_app/generated/locale_keys.g.dart';
 
@@ -25,23 +26,22 @@ class _SignInPageState extends State<SignInPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
+          AppToast.success(context, LocaleKeys.sign_in_success.tr());
           context.go('/todo');
         } else if (state is AuthFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppToast.error(context, state.message);
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.primary, // tashqi fon
+            backgroundColor: AppColors.primary,
             body: SafeArea(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
                 child: Column(
                   children: [
-                    // Yuqorida App nomi
+                    // App nomi
                     Text(
                       "Todo App",
                       style: TextStyle(
@@ -52,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     SizedBox(height: 30.h),
 
-                    // Ramka (oq card)
+                    // Oq card
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(22.w),
@@ -148,16 +148,27 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           SizedBox(height: 28.h),
 
-                          // Button
+                          // Sign In button
                           ElevatedButton(
-                            onPressed: () {
-                              context.read<AuthBloc>().add(
-                                EmailSignInRequested(
-                                  emailController.text.trim(),
-                                  passwordController.text.trim(),
-                                ),
-                              );
-                            },
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    final email = emailController.text.trim();
+                                    final password = passwordController.text
+                                        .trim();
+
+                                    if (email.isEmpty || password.isEmpty) {
+                                      AppToast.error(
+                                        context,
+                                        LocaleKeys.fill_all_fields.tr(),
+                                      );
+                                      return;
+                                    }
+
+                                    context.read<AuthBloc>().add(
+                                      EmailSignInRequested(email, password),
+                                    );
+                                  },
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 52),
                               backgroundColor: AppColors.primary,
@@ -181,17 +192,14 @@ class _SignInPageState extends State<SignInPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                LocaleKeys.dont_have_account.tr(),
-                                style: TextStyle(),
-                              ),
+                              Text(LocaleKeys.dont_have_account.tr()),
                               GestureDetector(
-                                onTap: () {
-                                  context.go("/sign-up");
-                                },
+                                onTap: () => context.go("/sign-up"),
                                 child: Text(
                                   " ${LocaleKeys.sign_up.tr()}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],

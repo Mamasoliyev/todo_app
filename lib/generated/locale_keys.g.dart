@@ -54,5 +54,17 @@ abstract class  LocaleKeys {
   static const text1 = 'text1';
   static const text2 = 'text2';
   static const text3 = 'text3';
+  static const todo_updated = 'todo_updated';
+  static const todo_added = 'todo_added';
+  static const todo_deleted = 'todo_deleted';
+  static const todo_marked_done = 'todo_marked_done';
+  static const todo_marked_pending = 'todo_marked_pending';
+  static const confirm_logout = 'confirm_logout';
+  static const logout_message = 'logout_message';
+  static const logging_out = 'logging_out';
+  static const logout = 'logout';
+  static const sign_in_success = 'sign_in_success';
+  static const fill_all_fields = 'fill_all_fields';
+  static const sign_up_success = 'sign_up_success';
 
 }
